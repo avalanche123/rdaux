@@ -1,0 +1,39 @@
+#!/usr/bin/env ruby
+
+root_path = File.expand_path(__FILE__ + '/../..')
+
+['lib', 'bundle'].each do |path|
+  dir = root_path + '/' + path
+
+  $LOAD_PATH.unshift(dir) unless $LOAD_PATH.include?(dir)
+end
+
+require 'rubygems'
+
+Dir.chdir(root_path) { require 'bundler/setup' }
+
+require 'cli'
+require 'rdaux'
+require 'rdaux/version'
+require 'rdaux/cli'
+
+extend RDaux::CLI
+
+def console_command(method)
+  Proc.new do |opts, args|
+    process_options(opts)
+    send(method, *args)
+  end
+end
+
+app = CLI::Application.new('rdaux', RDaux::VERSION)
+
+app.command('serve [options] PATH', 'Dynamically serve html documentation from a given directory', {
+  :log_level => ['--log-level LEVEL', ['debug', 'info', 'warn', 'error', 'fatal'], 'Log level']
+}, console_command(:start_serving))
+
+app.command('generate [options] PATH', 'Generates static html site using docs from given directory', {
+  
+}, console_command(:generate_site))
+
+app.run(ARGV)
