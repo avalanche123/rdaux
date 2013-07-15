@@ -16,7 +16,7 @@ module RDaux
     end
 
     def server
-      @server ||= with_logging { Web::Server.new(webapp_builder, logger, options) }
+      @server ||= with_logging(Web::Server.new(webapp_builder, logger, options))
     end
 
     def generator
@@ -59,8 +59,8 @@ module RDaux
 
     private
 
-    def with_logging
-      yield.tap { |n| n.add_listener(logging_listener)}
+    def with_logging(obj)
+      with_config(obj) {|o| o.add_listener(logging_listener)}
     end
 
     def with_config(obj)
