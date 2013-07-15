@@ -9,7 +9,7 @@ require 'rdaux/logging_listener'
 module RDaux
   module Container
     def webapp_builder
-      @webapp_builder ||= Web::Application.tap do |app|
+      @webapp_builder ||= with_config(Web::Application) do |app|
         app.set(:public_folder, public_folder)
         app.set(:markdown,      markdown)
       end
@@ -24,7 +24,7 @@ module RDaux
     end
 
     def logger
-      Logger.new($stderr).tap do |l|
+      with_config(Logger.new($stderr)) do |l|
         l.level     = log_level
         l.formatter = proc { |s, d, p, m| "%s | %-10s %s\n" % [d.strftime("%T,%L"), "[#{s}]", m] }
       end
@@ -61,6 +61,10 @@ module RDaux
 
     def with_logging
       yield.tap { |n| n.add_listener(logging_listener)}
+    end
+
+    def with_config(obj)
+      obj.tap {|o| yield(o)}
     end
   end
 end
