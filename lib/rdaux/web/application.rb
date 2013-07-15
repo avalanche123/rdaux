@@ -1,42 +1,44 @@
 require 'sinatra/base'
 
 module RDaux
-  class Application < Sinatra::Base
-    attr_reader :current_section
+  module Web
+    class Application < Sinatra::Base
+      attr_reader :current_section
 
-    enable :logging, :inline_templates
+      enable :logging, :inline_templates
 
-    get '/' do
-      redirect '/' + site.sections.keys.first
-    end
-
-    get '/*/?' do |path|
-      section = path.split('/').inject(site) do |section, segment|
-        break nil if section.nil?
-        section.sections[segment]
+      get '/' do
+        redirect '/' + site.sections.keys.first
       end
 
-      halt(404) if section.nil?
+      get '/*/?' do |path|
+        section = path.split('/').inject(site) do |section, segment|
+          break nil if section.nil?
+          section.sections[segment]
+        end
 
-      @current_section = section
+        halt(404) if section.nil?
 
-      if section.has_contents?
-        erb(:page, :locals => { :section => @current_section })
-      else
-        redirect '/' + path + '/' + section.sections.keys.first
+        @current_section = section
+
+        if section.has_contents?
+          erb(:page, :locals => { :section => @current_section })
+        else
+          redirect '/' + path + '/' + section.sections.keys.first
+        end
       end
-    end
 
-    def site
-      settings.site || halt(500)
-    end
+      def site
+        settings.site || halt(500)
+      end
 
-    def markdown
-      settings.markdown || halt(500)
-    end
+      def markdown
+        settings.markdown || halt(500)
+      end
 
-    def render_markdown(markup)
-      markdown.render(markup)
+      def render_markdown(markup)
+        markdown.render(markup)
+      end
     end
   end
 end

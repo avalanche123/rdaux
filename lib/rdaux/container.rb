@@ -2,23 +2,21 @@ require 'redcarpet'
 require 'logger'
 
 require 'rdaux/notifier'
+require 'rdaux/web'
 require 'rdaux/renderer'
-require 'rdaux/server'
-require 'rdaux/application'
-require 'rdaux/site'
 require 'rdaux/logging_listener'
 
 module RDaux
   module Container
     def webapp_builder
-      @webapp_builder ||= Application.tap do |app|
+      @webapp_builder ||= Web::Application.tap do |app|
         app.set(:public_folder, public_folder)
         app.set(:markdown,      markdown)
       end
     end
 
     def server
-      @server ||= with_logging { Server.new(webapp_builder, logger, options) }
+      @server ||= with_logging { Web::Server.new(webapp_builder, logger, options) }
     end
 
     def generator
