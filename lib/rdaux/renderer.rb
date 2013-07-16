@@ -14,7 +14,7 @@ module RDaux
       case language
       when nil
         "<pre><code>#{code}</code></pre>"
-      when 'diagram'
+      when 'ditaa'
         ascii2png(code)
       else
         highlight(code, language)
@@ -35,7 +35,7 @@ module RDaux
 
       File.open(txt_path, 'w+') { |f| f.write(code) }
 
-      "<img src=\"#{@ditaa_root}/#{image_id}.png\" alt=\"Text Diagram\">"
+      "<img src=\"#{@ditaa_root}/#{image_id}.png\" alt=\"Text Diagram\" class=\"img-rounded img-polaroid\">"
     end
   end
 end

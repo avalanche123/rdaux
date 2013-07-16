@@ -9,8 +9,8 @@ module RDaux
       enable :logging, :inline_templates
 
       get '/img/ditaa/:id.png/?' do |id|
-        txt_path = settings.public_folder + "/img/diagrams/#{id}.txt"
-        png_path = settings.public_folder + "/img/diagrams/#{id}.png"
+        txt_path = settings.public_folder + "/img/ditaa/#{id}.txt"
+        png_path = settings.public_folder + "/img/ditaa/#{id}.png"
 
         halt(404) unless File.exists?(txt_path)
 
@@ -58,7 +58,6 @@ end
 __END__
 
 @@ layout
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
