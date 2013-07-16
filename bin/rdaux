@@ -29,11 +29,20 @@ end
 app = CLI::Application.new('rdaux', RDaux::VERSION)
 
 app.command('serve [options] PATH', 'Dynamically serve html documentation from a given directory', {
-  :log_level => ['--log-level LEVEL', ['debug', 'info', 'warn', 'error', 'fatal'], 'Log level']
+  :title       => ['--title TITLE',             'Website title (e.g. RDaux)'],
+  :description => ['--description DESCRIPTION', 'Website description, displayed under title'],
+  :author      => ['--author AUTHOR',           'Website author, defaults to $USER'],
+  :log_level   => ['--log-level LEVEL',         ['debug', 'info', 'warn', 'error', 'fatal'], 'Log level'],
+  :bind        => ['--bind ADDRESS',            'IP and port or a unix domain socket to bind on (e.g. localhost:8080 or /var/run/socket.sock)'],
+  :workers     => ['--workers NUM', Integer,    'Number of unicorn worker processes to use, defaults to 4']
 }, console_command(:start_serving))
 
 app.command('generate [options] PATH', 'Generates static html site using docs from given directory', {
-  
+  :title       => ['--title TITLE',             'Website title (e.g. RDaux)'],
+  :description => ['--description DESCRIPTION', 'Website description, displayed under title'],
+  :author      => ['--author AUTHOR',           'Website author, defaults to $USER'],
+  :log_level   => ['--log-level LEVEL',         ['debug', 'info', 'warn', 'error', 'fatal'], 'Log level'],
+  :output_path => ['--output-path PATH',        'Path to store generated files in, defaults to site/ directory, next to the PATH given']
 }, console_command(:generate_site))
 
 app.run(ARGV)
