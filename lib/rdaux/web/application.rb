@@ -15,8 +15,9 @@ module RDaux
         halt(404) unless File.exists?(txt_path)
 
         Process::waitpid(POSIX::Spawn.spawn("java", '-jar', settings.ditaa_jar, txt_path, png_path))
+        File.unlink(txt_path)
 
-        redirect request.path_info
+        send_file(png_path, :status => 201)
       end
 
       get '/' do
