@@ -15,7 +15,7 @@ module RDaux
 
       def serve(website)
         @app.set(:site, website)
-      
+
         Unicorn::HttpServer.new(@app, {
           :listeners        => @options.fetch(:bind, 'localhost:8080'),
           :worker_processes => @options.fetch(:workers, 4),
