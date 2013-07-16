@@ -12,6 +12,7 @@ module RDaux
       @webapp_builder ||= with_config(Web::Application) do |app|
         app.set(:public_folder, public_folder)
         app.set(:markdown,      markdown)
+        app.set(:ditaa_jar,     ditaa_jar)
       end
     end
 
@@ -42,9 +43,15 @@ module RDaux
       File.expand_path(__FILE__ + '/../../../public')
     end
 
+    def ditaa_jar
+      File.expand_path(__FILE__ + '/../../../vendor/ditaa/ditaa0_9.jar')
+    end
+
     def markdown
       Redcarpet::Markdown.new(Renderer.new({
-        :filter_html => true
+        :filter_html => true,
+        :images_dir  => public_folder,
+        :web_root    => '/img/diagrams'
       }), {
         :no_intra_emphasis   => true,
         :tables              => true,
