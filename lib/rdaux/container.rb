@@ -8,20 +8,24 @@ require 'rdaux/logging_listener'
 
 module RDaux
   module Container
-    def webapp_builder
-      @webapp_builder ||= with_config(Web::Application) do |app|
+    def webapp
+      @webapp ||= with_config(Web::Application) do |app|
         app.set(:public_folder, public_folder)
         app.set(:markdown,      markdown)
         app.set(:ditaa_jar,     ditaa_jar)
       end
     end
 
-    def server
-      @server ||= with_logging(Web::Server.new(webapp_builder, logger, options))
+    def webserver
+      @webserver ||= with_logging(Web::Server.new(webapp, logger, options))
+    end
+
+    def website
+      @website ||= Web::Site.new(title, description, author, directory)
     end
 
     def generator
-      @generator ||= Generator.new(options)
+      @generator ||= with_logging(Web::Site::Generator.new(options))
     end
 
     def logger
@@ -65,6 +69,18 @@ module RDaux
     end
 
     private
+
+    def title
+      options.fetch(:title, "RDaux")
+    end
+
+    def description
+      options.fetch(:description) { "Documentation for <em>#{directory.relative_path_from(Pathname(ENV['PWD']))}</em>" }
+    end
+
+    def author
+      options.fetch(:author) { ENV['USER'] }
+    end
 
     def with_logging(obj)
       with_config(obj) {|o| o.add_listener(logging_listener)}
