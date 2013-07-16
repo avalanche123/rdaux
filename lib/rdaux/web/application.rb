@@ -84,7 +84,7 @@ __END__
     }
     .footer {
     }
-    .docs-sidenav {
+    .docs-sidenav .docs-sidenav {
       padding-right: 0;
     }
     .docs-sidenav > li > span {
