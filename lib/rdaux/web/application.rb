@@ -8,7 +8,7 @@ module RDaux
 
       enable :logging, :inline_templates
 
-      get '/img/diagrams/:id.png/?' do |id|
+      get '/img/ditaa/:id.png/?' do |id|
         txt_path = settings.public_folder + "/img/diagrams/#{id}.txt"
         png_path = settings.public_folder + "/img/diagrams/#{id}.png"
 
@@ -125,11 +125,11 @@ __END__
       </header>
 
       <section class="row-fluid contents">
-        <nav class="span2">
+        <nav class="span3">
           <%= erb(:sections, :locals => { :sections => site.sections, :base => '/' }) %>
         </nav>
 
-        <article class="span10">
+        <article class="span9">
           <%= yield %>
         </article>
       </section>
