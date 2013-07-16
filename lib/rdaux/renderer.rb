@@ -24,16 +24,20 @@ module RDaux
     private
 
     def highlight(code, language)
-      Pygments.highlight(code, :lexer => language)
+      markup = Pygments.highlight(code, :lexer => language)
+      markup = markup.sub(/<div class="highlight"><pre>/,'<pre><code class="' + language + '">')
+      markup = markup.sub(/<\/pre><\/div>/,"</code></pre>")
+      markup
     rescue MentosError
       "<pre><code class=\"#{language}\">#{code}</code></pre>"
     end
 
     def ascii2png(code)
       image_id = Digest::MD5.hexdigest(code)
+      png_path = @images_dir + @ditaa_root + "/#{image_id}.txt"
       txt_path = @images_dir + @ditaa_root + "/#{image_id}.txt"
 
-      File.open(txt_path, 'w+') { |f| f.write(code) }
+      File.open(txt_path, 'w+') { |f| f.write(code) } unless File.exists?(png_path)
 
       "<img src=\"#{@ditaa_root}/#{image_id}.png\" alt=\"Text Diagram\" class=\"img-rounded img-polaroid\">"
     end
