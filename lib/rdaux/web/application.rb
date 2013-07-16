@@ -1,3 +1,4 @@
+require 'posix/spawn'
 require 'sinatra/base'
 
 module RDaux
@@ -6,6 +7,17 @@ module RDaux
       attr_reader :current_section
 
       enable :logging, :inline_templates
+
+      get '/img/diagrams/:id.png/?' do |id|
+        txt_path = settings.public_folder + "/img/diagrams/#{id}.txt"
+        png_path = settings.public_folder + "/img/diagrams/#{id}.png"
+
+        halt(404) unless File.exists?(txt_path)
+
+        Process::waitpid(POSIX::Spawn.spawn("java", '-jar', settings.ditaa_jar, txt_path, png_path))
+
+        redirect request.path_info
+      end
 
       get '/' do
         redirect '/' + site.sections.keys.first
@@ -53,8 +65,8 @@ __END__
     <meta charset="utf-8">
     <title><%= site.title %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="description" content="<%= site.description %>">
+    <meta name="author" content="<%= site.author %>">
 
     <!-- Le styles -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -62,6 +74,16 @@ __END__
     <link href="/css/bootstrap-responsive.min.css" rel="stylesheet">
 
     <style>
+    body {
+      margin: 20px 0;
+    }
+    .header {
+    }
+    .contents {
+      margin: 20px 0;
+    }
+    .footer {
+    }
     .docs-sidenav {
       padding-right: 0;
     }
@@ -95,28 +117,28 @@ __END__
   </head>
 
   <body>
-    <header class="header">
-      <h1>Getting started</h1>
-      <p class="lead">Overview of the project and how to get started with a simple template.</p>
-    </header>
-
     <div class="container-fluid">
 
-      <div class="row-fluid">
-        <div class="span2">
-          <%= erb(:sections, :locals => { :sections => site.sections, :base => '/' }) %>
-        </div>
+      <header class="header">
+        <h1><%= site.title %></h1>
+        <p class="lead"><%= site.description %></p>
+      </header>
 
-        <div class="span10">
+      <section class="row-fluid contents">
+        <nav class="span2">
+          <%= erb(:sections, :locals => { :sections => site.sections, :base => '/' }) %>
+        </nav>
+
+        <article class="span10">
           <%= yield %>
-        </din>
-      </div>
+        </article>
+      </section>
+
+      <footer class="footer">
+        <p class="text-center">Automatically generated with <a href="https://github.com/avalanche123/rdaux">RDaux, beautiful markdown docs</a></p>
+      </footer>
 
     </div> <!-- /container -->
-
-    <footer class="footer">
-      <p>&copy; Company 2013</p>
-    </footer>
 
     <script src="/js/jquery.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>

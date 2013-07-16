@@ -1,9 +1,7 @@
-require 'pathname'
-
 module RDaux
   module Web
     class Site
-      attr_reader :title, :sections
+      attr_reader :title, :description, :author, :sections
 
       class Section
         attr_reader   :key
@@ -15,7 +13,7 @@ module RDaux
         end
 
         def title
-          @key.split('-').map(&:capitalize).join(' ')
+          @title ||= @key.split('-').map(&:capitalize).join(' ')
         end
 
         def contents
@@ -31,16 +29,18 @@ module RDaux
         end
       end
 
-      def initialize(title, root)
-        @title    = title
-        @root     = root
-        @sections = find_sections(root)
+      def initialize(title, description, author, root)
+        @title       = title
+        @description = description
+        @author      = author
+        @root        = root
+        @sections    = find_sections(root)
       end
 
       private
 
       def find_sections(root)
-        Pathname(root).children.inject({}) do |sections, path|
+        root.children.inject({}) do |sections, path|
           unless path.symlink?
             if path.file? && path.extname == '.md'
               filename = path.sub_ext('').basename.to_s.sub(/^[0-9]*[\_\-]?/, '')
