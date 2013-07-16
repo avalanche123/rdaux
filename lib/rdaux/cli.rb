@@ -1,3 +1,4 @@
+require 'pathname'
 require 'rdaux/container'
 
 module RDaux
@@ -5,20 +6,25 @@ module RDaux
     include RDaux::Container
 
     attr_reader :options
+    attr_reader :directory
 
     def process_options(options)
       @options = options
     end
 
-    def start_serving(directory = nil)
+    def use_directory(directory = nil)
       raise 'PATH is a required argument to serve command' if directory.nil?
 
-      server.serve_from_directory(File.expand_path(directory))
+      @directory = Pathname(directory)
+    end
+
+    def start_serving(directory = nil)
+      use_directory(directory)
+      webserver.serve(website)
     end
 
     def generate_site(directory = nil)
-      raise 'PATH is a required argument to generate command' if directory.nil?
-
+      use_directory(directory)
       generator.generate_for_directory(File.expand_path(directory))
     end
   end
