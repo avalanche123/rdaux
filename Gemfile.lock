@@ -36,6 +36,7 @@ PLATFORMS
 DEPENDENCIES
   cli!
   minitest
+  posix-spawn (= 0.3.6)
   pygments.rb (= 0.5.1)
   rake
   redcarpet (= 3.0.0)
