@@ -5,8 +5,7 @@ module RDaux
   module CLI
     include RDaux::Container
 
-    attr_reader :options
-    attr_reader :directory
+    attr_reader :options, :directory
 
     def command(method)
       Proc.new do |opts, args|
