@@ -8,6 +8,13 @@ module RDaux
     attr_reader :options
     attr_reader :directory
 
+    def command(method)
+      Proc.new do |opts, args|
+        process_options(opts)
+        send(method, *args)
+      end
+    end
+
     def process_options(options)
       @options = options
     end
