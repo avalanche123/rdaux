@@ -1,0 +1,10 @@
+<% for key, section in sections %>
+  <li<% if section == current_section %> class="active"<% end %>>
+    <a href="#<%= base %><%= section.key %>" title="<%= section.title %>"><i class="icon-chevron-right"></i><%= section.title %></a>
+    <% if section.has_children? %>
+    <ul class="nav nav-list">
+      <%= erb(:nav, :locals => { :sections => section.sections, :base => section.key + '.' }) %>
+    </ul>
+    <% end %>
+  </li>
+<% end %>

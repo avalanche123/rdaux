@@ -1,0 +1,11 @@
+<% for key, section in sections %>
+<a name="<%= base %><%= section.key %>"></a>
+<% if section.has_contents? %>
+<section class="docs-section">
+  <%= render_markdown(section.contents) %>
+</section>
+<% end %>
+<% if section.has_children? %>
+<%= erb(:docs, :locals => { :sections => section.sections, :base => section.key + '.' }) %>
+<% end %>
+<% end %>
