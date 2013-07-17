@@ -39,7 +39,7 @@ module RDaux
 
       File.open(txt_path, 'w+') { |f| f.write(code) } unless File.exists?(png_path)
 
-      "<img src=\"#{@ditaa_root}/#{image_id}.png\" alt=\"Text Diagram\" class=\"img-rounded img-polaroid\">"
+      "<img src=\"#{@ditaa_root}/#{image_id}.png\" alt=\"Text Diagram\" class=\"img-rounded img-polaroid ditaa\">"
     end
   end
 end
