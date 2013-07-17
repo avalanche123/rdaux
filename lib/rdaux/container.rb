@@ -2,7 +2,10 @@ require 'redcarpet'
 require 'logger'
 
 require 'rdaux/notifier'
-require 'rdaux/web'
+require 'rdaux/web/application'
+require 'rdaux/web/server'
+require 'rdaux/web/site'
+require 'rdaux/web/site/generator'
 require 'rdaux/renderer'
 require 'rdaux/logging_listener'
 
@@ -24,7 +27,7 @@ module RDaux
     end
 
     def generator
-      @generator ||= with_logging(Web::Site::Generator.new(options))
+      @generator ||= with_logging(Web::Site::Generator.new(markdown, views_dir, public_folder, ditaa_jar, target_dir))
     end
 
     def logger
@@ -69,6 +72,10 @@ module RDaux
 
     private
 
+    def views_dir
+      File.expand_path(__FILE__ + '/../web/views')
+    end
+
     def title
       options.fetch(:title, "RDaux")
     end
@@ -79,6 +86,10 @@ module RDaux
 
     def author
       options.fetch(:author) { ENV['USER'] }
+    end
+
+    def target_dir
+      Pathname(options.fetch(:output_path) { directory + '../site/' })
     end
 
     def with_logging(obj)

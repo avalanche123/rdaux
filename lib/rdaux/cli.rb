@@ -31,7 +31,7 @@ module RDaux
 
     def generate_site(directory = nil)
       use_directory(directory)
-      generator.generate_for_directory(File.expand_path(directory))
+      generator.generate_static(website)
     end
   end
 end

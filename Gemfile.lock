@@ -41,4 +41,5 @@ DEPENDENCIES
   rake
   redcarpet (= 3.0.0)
   sinatra (= 1.3.3)
+  tilt (= 1.4.1)
   unicorn (= 4.6.2)

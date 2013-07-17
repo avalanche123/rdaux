@@ -1,7 +1,7 @@
 module RDaux
   module Web
     class Site
-      attr_reader :title, :description, :author, :sections
+      attr_reader :title, :description, :author, :root
 
       class Section
         attr_reader   :key
