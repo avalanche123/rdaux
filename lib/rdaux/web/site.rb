@@ -34,7 +34,10 @@ module RDaux
         @description = description
         @author      = author
         @root        = root
-        @sections    = find_sections(root)
+      end
+
+      def sections
+        find_sections(@root)
       end
 
       private
@@ -43,28 +46,40 @@ module RDaux
         root.children.inject({}) do |sections, path|
           unless path.symlink?
             if path.file? && path.extname == '.md'
-              filename = path.sub_ext('').basename.to_s.sub(/^[0-9]*[\_\-]?/, '')
-              key      = filename.split(/[\_\- ]/).map(&:downcase).join('-')
+              key = basename_to_key(base_filename(path))
+              section = get_or_create_section(key, sections)
 
-              unless sections.has_key?(key)
-                sections[key] = Section.new(key)
-              end
-
-              sections[key].contents = path
+              section.contents = path
             elsif path.directory? && !path.basename.to_s.start_with?('.')
-              dirname = path.basename.to_s.sub(/^[0-9]*[\_\-]?/, '')
-              key     = dirname.split(/[\_\- ]/).map(&:downcase).join('-')
+              key = basename_to_key(base_dirname(path))
+              section = get_or_create_section(key, sections)
 
-              unless sections.has_key?(key)
-                sections[key] = Section.new(key)
-              end
-
-              sections[key].sections = find_sections(path)
+              section.sections = find_sections(path)
             end
           end
 
           sections
         end
+      end
+
+      def get_or_create_section(key, sections)
+        unless sections.has_key?(key)
+          sections[key] = Section.new(key)
+        end
+
+        sections[key]
+      end
+
+      def basename_to_key(basename)
+        basename.split(/[\_\- ]/).map(&:downcase).join('-')
+      end
+
+      def base_filename(path)
+        path.sub_ext('').basename.to_s.sub(/^[0-9]*[\_\-]?/, '')
+      end
+
+      def base_dirname(path)
+        path.basename.to_s.sub(/^[0-9]*[\_\-]?/, '')
       end
     end
   end

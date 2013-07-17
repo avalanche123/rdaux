@@ -21,24 +21,7 @@ module RDaux
       end
 
       get '/' do
-        redirect '/' + site.sections.keys.first
-      end
-
-      get '/*/?' do |path|
-        section = path.split('/').inject(site) do |section, segment|
-          break nil if section.nil?
-          section.sections[segment]
-        end
-
-        halt(404) if section.nil?
-
-        @current_section = section
-
-        if section.has_contents?
-          erb(:page, :locals => { :section => @current_section })
-        else
-          redirect '/' + path + '/' + section.sections.keys.first
-        end
+        erb(:site)
       end
 
       def site
@@ -58,7 +41,7 @@ end
 
 __END__
 
-@@ layout
+@@ site
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -80,26 +63,37 @@ __END__
     .header {
     }
     .contents {
-      margin: 20px 0;
     }
     .footer {
     }
-    .docs-sidenav .docs-sidenav {
+    .docs-sidenav {
+      margin: 30px 0 0;
+      padding: 0;
+      background-color: #fff;
+    }
+    .docs-sidenav .nav-list {
       padding-right: 0;
     }
-    .docs-sidenav > li > span {
-      display: block;
-      margin: 0 -15px;
+    .docs-sidenav > li > a {
+      padding: 8px 14px 8px 14px;
     }
-    .docs-sidenav > li > a,
-    .docs-sidenav > li > span {
-      padding: 8px 14px;
+    .docs-sidenav .nav-list > li > a {
+      padding: 8px 14px 8px 14px;
     }
     .docs-sidenav .icon-chevron-right {
       float: right;
       margin-top: 2px;
       margin-right: -6px;
       opacity: .25;
+    }
+    .docs-sidenav > li > a:hover {
+      background-color: #f5f5f5;
+    }
+    .docs-sidenav a:hover .icon-chevron-right {
+      opacity: .5;
+    }
+    .docs-section {
+      padding-top: 30px;
     }
     </style>
 
@@ -124,15 +118,17 @@ __END__
         <p class="lead"><%= site.description %></p>
       </header>
 
-      <section class="row-fluid contents">
-        <nav class="span3">
-          <%= erb(:sections, :locals => { :sections => site.sections, :base => '/' }) %>
+      <article class="row-fluid contents">
+        <nav class="span3 navigation">
+          <ul class="nav nav-list docs-sidenav">
+            <%= erb(:nav, :locals => { :sections => site.sections, :base => '' }) %>
+          </ul>
         </nav>
 
-        <article class="span9">
-          <%= yield %>
-        </article>
-      </section>
+        <div class="span9 documentation">
+          <%= erb(:docs, :locals => { :sections => site.sections, :base => '' }) %>
+        </div>
+      </article>
 
       <footer class="footer">
         <p class="text-center">Automatically generated with <a href="https://github.com/avalanche123/rdaux">RDaux, beautiful markdown docs</a></p>
@@ -146,21 +142,27 @@ __END__
   </body>
 </html>
 
-@@ page
-<%= render_markdown(section.contents) %>
+@@ docs
+<% for key, section in sections %>
+<a name="<%= base %><%= section.key %>"></a>
+<% if section.has_contents? %>
+<section class="docs-section">
+  <%= render_markdown(section.contents) %>
+</section>
+<% end %>
+<% if section.has_children? %>
+<%= erb(:docs, :locals => { :sections => section.sections, :base => section.key + '.' }) %>
+<% end %>
+<% end %>
 
-@@ sections
-<ul class="nav nav-list docs-sidenav">
+@@ nav
 <% for key, section in sections %>
   <li<% if section == current_section %> class="active"<% end %>>
-    <% if section.has_contents? %>
-    <a href="<%= base %><%= section.key %>" title="<%= section.title %>"><i class="icon-chevron-right"></i><%= section.title %></a>
-    <% else %>
-    <span><%= section.title %></span>
-    <% end %>
+    <a href="#<%= base %><%= section.key %>" title="<%= section.title %>"><i class="icon-chevron-right"></i><%= section.title %></a>
     <% if section.has_children? %>
-    <%= erb(:sections, :locals => { :sections => section.sections, :base => base + section.key + '/' }) %>
+    <ul class="nav nav-list">
+      <%= erb(:nav, :locals => { :sections => section.sections, :base => section.key + '.' }) %>
+    </ul>
     <% end %>
   </li>
 <% end %>
-</ul>
