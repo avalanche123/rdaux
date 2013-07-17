@@ -10,14 +10,13 @@ module RDaux
   module Container
     def webapp
       @webapp ||= with_config(Web::Application) do |app|
-        app.set(:public_folder, public_folder)
-        app.set(:markdown,      markdown)
-        app.set(:ditaa_jar,     ditaa_jar)
+        app.set(:markdown,  markdown)
+        app.set(:ditaa_jar, ditaa_jar)
       end
     end
 
     def webserver
-      @webserver ||= with_logging(Web::Server.new(webapp, logger, options))
+      @webserver ||= with_logging(Web::Server.new(webapp, logger, public_folder, options))
     end
 
     def website
