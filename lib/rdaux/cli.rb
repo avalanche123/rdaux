@@ -19,7 +19,7 @@ module RDaux
       @options = options
     end
 
-    def use_directory(directory = nil)
+    def use_directory(directory)
       raise 'PATH is a required argument to serve command' if directory.nil?
 
       @directory = Pathname(directory)
