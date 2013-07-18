@@ -34,8 +34,8 @@ module RDaux
 
     def ascii2png(code)
       image_id = Digest::MD5.hexdigest(code)
-      png_path = @images_dir + @ditaa_root + "/#{image_id}.txt"
-      txt_path = @images_dir + @ditaa_root + "/#{image_id}.txt"
+      png_path = @images_dir + '/' + @ditaa_root + "/#{image_id}.txt"
+      txt_path = @images_dir + '/' + @ditaa_root + "/#{image_id}.txt"
 
       File.open(txt_path, 'w+') { |f| f.write(code) } unless File.exists?(png_path)
 

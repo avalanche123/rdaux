@@ -57,7 +57,7 @@ module RDaux
       Redcarpet::Markdown.new(Renderer.new({
         :filter_html => true,
         :images_dir  => public_folder,
-        :ditaa_root  => '/img/ditaa'
+        :ditaa_root  => 'img/ditaa'
       }), {
         :no_intra_emphasis   => true,
         :tables              => true,
