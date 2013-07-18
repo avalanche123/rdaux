@@ -1,9 +1,9 @@
 # RDaux
 
 RDaux creates beautiful documentation websites from markdown files.
-It is inspired by daux.io and uses redcarpet with pygments.rb to process
-github-flavored markdown files into beautiful documentation websites and
-supports ASCII art with help of [Ditaa](http://sourceforge.net/projects/ditaa/).
+It is inspired by [daux.io](http://daux.io/) and uses redcarpet and pygments.rb
+to process github-flavored markdown files into beautiful documentation websites
+and supports ASCII art with help of [Ditaa](http://sourceforge.net/projects/ditaa/).
 
 ## Installation
 
