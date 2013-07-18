@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>RDaux</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Documentation servant">
+    <meta name="author" content="Bulat Shakirzyanov <mallluhuct@gmail.com>">
+
+    <!-- Le styles -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/pygments.css" rel="stylesheet">
+    <link href="/css/bootstrap-responsive.min.css" rel="stylesheet">
+
+    <style>
+    body {
+      margin: 20px 0;
+    }
+    .header {
+    }
+    .contents {
+    }
+    .footer {
+    }
+    .docs-sidenav {
+      margin: 30px 0 0;
+      padding: 0;
+      background-color: #fff;
+    }
+    .docs-sidenav .nav-list {
+      padding-right: 0;
+    }
+    .docs-sidenav > li > a {
+      padding: 8px 14px 8px 14px;
+    }
+    .docs-sidenav .nav-list > li > a {
+      padding: 8px 14px 8px 14px;
+    }
+    .docs-sidenav .icon-chevron-right {
+      float: right;
+      margin-top: 2px;
+      margin-right: -6px;
+      opacity: .25;
+    }
+    .docs-sidenav > li > a:hover {
+      background-color: #f5f5f5;
+    }
+    .docs-sidenav a:hover .icon-chevron-right {
+      opacity: .5;
+    }
+    .docs-section {
+      padding-top: 30px;
+    }
+    .ditaa {
+      padding: 0;
+    }
+    </style>
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!-- <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="/ico/apple-touch-icon-57-precomposed.png">
+    <link rel="shortcut icon" href="/ico/favicon.png"> -->
+  </head>
+
+  <body>
+    <div class="container-fluid">
+
+      <header class="header">
+        <h1>RDaux</h1>
+        <p class="lead">Documentation servant</p>
+      </header>
+
+      <article class="row-fluid contents">
+        <nav class="span3 navigation">
+          <ul class="nav nav-list docs-sidenav">
+              <li>
+    <a href="#quick-start" title="Quick Start"><i class="icon-chevron-right"></i>Quick Start</a>
+    
+  </li>
+  <li>
+    <a href="#supported-markup" title="Supported Markup"><i class="icon-chevron-right"></i>Supported Markup</a>
+    
+  </li>
+  <li>
+    <a href="#navigation" title="Navigation"><i class="icon-chevron-right"></i>Navigation</a>
+    
+  </li>
+
+          </ul>
+        </nav>
+
+        <div class="span9 documentation">
+          <a name="quick-start"></a>
+<section class="docs-section">
+  <h1>Quick Start</h1>
+
+<p>RDaux creates beautiful documentation websites from markdown files.
+It is inspired by <a href="http://daux.io/">daux.io</a> and uses redcarpet and pygments.rb
+to process github-flavored markdown files into beautiful documentation websites
+and supports ASCII art with help of <a href="http://sourceforge.net/projects/ditaa/">Ditaa</a>.</p>
+
+<h2>Installation</h2>
+
+<p>RDaux is a rubygem, install it by running the following in your shell:</p>
+<pre><code class="bash">&gt; gem install rdaux
+</code></pre>
+<h3>Requirements</h3>
+
+<p>RDaux requires Python 2.5+ for its pygments dependency and Java 1.5+ for ditaa.
+Make sure those tools are installed and available in the <code>$PATH</code></p>
+
+<h2>Usage</h2>
+
+<p>After RDaux has been installed, you can begin using it from your cli:</p>
+<pre><code class="bash">&gt; rdaux -h
+Usage: rdaux <span class="o">[</span>--version<span class="o">]</span> <span class="o">[</span>--help<span class="o">]</span> <span class="nb">command</span> <span class="o">[</span>options<span class="o">]</span> <span class="o">[</span>args<span class="o">]</span>
+
+Available rdaux commands are:
+  serve      Dynamically serve html documentation from a given directory
+  generate   Generates static html site using docs from given directory
+
+Common options:
+    -h, --help                       Show this message
+    -v, --version                    Show version
+</code></pre>
+<p>As you can see, RDaux can dynamically serve documentation from your markdown
+sources or it can generate a static documentation website. You can determine
+options available to each subcommand by running:</p>
+<pre><code class="bash">&gt; rdaux &lt;subcommand&gt; -h|--help
+</code></pre>
+</section>
+<a name="supported-markup"></a>
+<section class="docs-section">
+  <h1>Supported Markup</h1>
+
+<p>RDaux allows you to use github-flavored markdown. And supports ASCII art using
+powerful <a href="http://sourceforge.net/projects/ditaa/">Ditaa</a> for rendering.</p>
+
+<h2>Examples</h2>
+
+<h3>ASCII diagrams</h3>
+
+<p>ASCII diagrams are processed using Ditaa, for example, the following diagram:</p>
+<pre><code>```ditaa
+  Front-end     :      Back-end     |    Financiele
+                |                   |   Instellingen
+/----------+    |    /---------\    :
+|   Simyo  |    |    | CDRator |    |
+|  Website |<---+--->\---------/    |
+\----------/    :          ^        |
+                |          |        |
+                |          v        |
+/----------\    |    /---------\    |
+| Simone   |    |    |cYEL     |    |    /----------\
+|  (IVR)   |<---+--->|   SMO   :<---+--->| Interpay |
+\----------/    :    |         |    :    \----------/
+                |    \---------/    | 
+                |                   |
+```
+</code></pre>
+<p>Will looks like the following image after rendering:</p>
+<img src="/img/ditaa/9655ff63d08c953562aab3908cd81375.png" alt="Text Diagram" class="img-rounded img-polaroid ditaa">
+<h3>Code highlighting</h3>
+
+<p>You can use github-flavored markdown to highligh code sections, e.g.:</p>
+<pre><code>```ruby
+require 'rdaux'
+
+RDaux.start
+```
+</code></pre>
+<p>Becomes:</p>
+<pre><code class="ruby"><span class="nb">require</span> <span class="s1">&#39;rdaux&#39;</span>
+
+<span class="no">RDaux</span><span class="o">.</span><span class="n">start</span>
+</code></pre>
+</section>
+<a name="navigation"></a>
+<section class="docs-section">
+  <h1>Navigation</h1>
+
+<p>Navigation menu on the left is built from directories and mardown file names in
+the directory with documentation. For example, given the following directory
+structure:</p>
+<pre><code>docs
+|-- 01_Quick_Start.md
+|-- 02_Advanced_Usage.md
+|-- 02_Advanced_Usage
+|    |-- 01_Installation.md
+|    |-- 02_Configuration.md
+|    +-- 03_Customization.md
++-- 03_Contributing
+     |-- 01_First_Section
+     |    |-- 01_Sub_Section.md
+     |    |-- 02_Second_Sub_Section.md
+     |    +-- 03_Last_Sub_Section.md
+     +-- 02_Second_Section.md
+</code></pre>
+<p>Would become a navigation menu with each section mapping directly to a file or
+directory in documentation tree:</p>
+<pre><code>Quick Start
+Advanced Usage
+    Installation
+    Configuration
+    Customization
+Contributing
+    First Section
+        Sub Section
+        Second Sub Section
+        Last Sub Section
+    Second Section
+</code></pre>
+<p>Advanced usage section will have the contents of the appropriate markdown file
+as well as subsections with contents of markdown files stored in the directory
+with the same name.</p>
+
+</section>
+
+        </div>
+      </article>
+
+      <footer class="footer">
+        <p class="text-center">Automatically generated with <a href="https://github.com/avalanche123/rdaux">RDaux, beautiful markdown docs</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+
+  </body>
+</html>
