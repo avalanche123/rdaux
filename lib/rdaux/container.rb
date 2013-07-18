@@ -81,7 +81,7 @@ module RDaux
     end
 
     def description
-      options.fetch(:description) { "Documentation for <em>#{directory.relative_path_from(Pathname(ENV['PWD']))}</em>" }
+      options.fetch(:description) { "Documentation for <em>#{directory}</em>" }
     end
 
     def author
