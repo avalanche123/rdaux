@@ -16,7 +16,42 @@ supports ASCII art with help of ditaa}
   spec.homepage      = ""
   spec.license       = "MIT"
 
-  spec.files         = `git ls-files`.split($/)
+  spec.files         = [
+    'LICENSE.txt',
+    'README.md',
+    'bin/rdaux',
+    'lib/rdaux.rb',
+    'lib/rdaux/cli.rb',
+    'lib/rdaux/container.rb',
+    'lib/rdaux/logging_listener.rb',
+    'lib/rdaux/notifier.rb',
+    'lib/rdaux/renderer.rb',
+    'lib/rdaux/version.rb',
+    'lib/rdaux/web/application.rb',
+    'lib/rdaux/web/server.rb',
+    'lib/rdaux/web/site.rb',
+    'lib/rdaux/web/site/generator.rb',
+    'lib/rdaux/web/views/docs.erb',
+    'lib/rdaux/web/views/nav.erb',
+    'lib/rdaux/web/views/site.erb',
+    'public/css/bootstrap-responsive.css',
+    'public/css/bootstrap-responsive.min.css',
+    'public/css/bootstrap.css',
+    'public/css/bootstrap.min.css',
+    'public/css/pygments.css',
+    'public/img/ditaa/.gitignore',
+    'public/img/glyphicons-halflings-white.png',
+    'public/img/glyphicons-halflings.png',
+    'public/js/bootstrap.js',
+    'public/js/bootstrap.min.js',
+    'public/js/html5shiv.min.js',
+    'public/js/jquery.min.js',
+    'rdaux.gemspec',
+    'vendor/ditaa/COPYING',
+    'vendor/ditaa/HISTORY',
+    'vendor/ditaa/ditaa0_9.jar'
+  ]
+
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
