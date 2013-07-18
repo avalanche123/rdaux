@@ -13,7 +13,7 @@ It is inspired by daux.io and uses redcarpet with pygments.rb to process
 github-flavored markdown files into beautiful documentation websites and
 supports ASCII art with help of ditaa}
   spec.summary       = %q{RDaux creates beautiful documentation websites from markdown files}
-  spec.homepage      = ""
+  spec.homepage      = "http://avalanche123.com/rdaux"
   spec.license       = "MIT"
 
   spec.files         = [
