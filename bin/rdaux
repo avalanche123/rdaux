@@ -12,14 +12,14 @@ require 'rubygems'
 
 Dir.chdir(root_path) { require 'bundler/setup' }
 
-require 'cli'
+require 'avalanche/cli'
 require 'rdaux'
 require 'rdaux/version'
 require 'rdaux/cli'
 
 extend RDaux::CLI
 
-app = CLI::Application.new('rdaux', RDaux::VERSION)
+app = Avalanche::CLI::Application.new('rdaux', RDaux::VERSION)
 
 app.command('serve [options] PATH', 'Dynamically serve html documentation from a given directory', {
   :title       => ['--title TITLE',             'Website title (e.g. RDaux)'],
